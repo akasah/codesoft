@@ -1,0 +1,82 @@
+import json
+
+class Task:
+    def __init__(self, description, status="Pending"):
+        self.description = description
+        self.status = status
+
+    def __str__(self):
+        return f"{self.description} [{self.status}]"
+
+    def mark_completed(self):
+        self.status = "Completed"
+
+class ToDoList:
+    def __init__(self):
+        self.tasks = []
+
+    def add_task(self, task):
+        self.tasks.append(task)
+
+    def update_task(self, index, description=None, status=None):
+        if 0 <= index < len(self.tasks):
+            if description:
+                self.tasks[index].description = description
+            if status:
+                self.tasks[index].status = status
+
+    def delete_task(self, index):
+        if 0 <= index < len(self.tasks):
+            del self.tasks[index]
+
+    def display_tasks(self):
+        for i, task in enumerate(self.tasks):
+            print(f"{i + 1}. {task}")
+
+    def save_tasks(self, filename="tasks.json"):
+        with open(filename, 'w') as file:
+            tasks_data = [{"description": task.description, "status": task.status} for task in self.tasks]
+            json.dump(tasks_data, file)
+
+    def load_tasks(self, filename="tasks.json"):
+        try:
+            with open(filename, 'r') as file:
+                tasks_data = json.load(file)
+                self.tasks = [Task(data["description"], data["status"]) for data in tasks_data]
+        except FileNotFoundError:
+            print("No saved tasks found.")
+
+def main():
+    todo_list = ToDoList()
+    todo_list.load_tasks()
+
+    while True:
+        print("\nTo-Do List Application")
+        print("1. Add Task")
+        print("2. View Tasks")
+        print("3. Update Task")
+        print("4. Delete Task")
+        print("5. Save and Exit")
+        choice = input("Choose an option: ")
+
+        if choice == '1':
+            description = input("Enter task description: ")
+            todo_list.add_task(Task(description))
+        elif choice == '2':
+            todo_list.display_tasks()
+        elif choice == '3':
+            index = int(input("Enter task number to update: ")) - 1
+            description = input("Enter new description (or leave blank to keep current): ")
+            status = input("Enter new status (Pending/Completed) (or leave blank to keep current): ")
+            todo_list.update_task(index, description, status)
+        elif choice == '4':
+            index = int(input("Enter task number to delete: ")) - 1
+            todo_list.delete_task(index)
+        elif choice == '5':
+            todo_list.save_tasks()
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()

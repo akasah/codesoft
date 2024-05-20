@@ -1,0 +1,54 @@
+def add(a, b):
+    return a + b
+
+def subtract(a, b):
+    return a - b
+
+def multiply(a, b):
+    return a * b
+
+def divide(a, b):
+    if b != 0:
+        return a / b
+    else:
+        return "Error! Division by zero."
+
+def main():
+    print("Simple Calculator")
+    
+    # Input the first number
+    num1 = float(input("Enter the first number: "))
+    
+    # Input the second number
+    num2 = float(input("Enter the second number: "))
+    
+    # Input the operation choice
+    print("Choose an operation:")
+    print("1. Addition (+)")
+    print("2. Subtraction (-)")
+    print("3. Multiplication (*)")
+    print("4. Division (/)")
+    choice = input("Enter the number corresponding to the operation: ")
+    
+    # Perform the calculation
+    if choice == '1':
+        result = add(num1, num2)
+        operation = "+"
+    elif choice == '2':
+        result = subtract(num1, num2)
+        operation = "-"
+    elif choice == '3':
+        result = multiply(num1, num2)
+        operation = "*"
+    elif choice == '4':
+        result = divide(num1, num2)
+        operation = "/"
+    else:
+        print("Invalid choice!")
+        return
+    
+    # Display the result
+    print(f"The result of {num1} {operation} {num2} is: {result}")
+
+if __name__ == "__main__":
+    main()
